@@ -1,10 +1,14 @@
 <?php
-
 require __DIR__ . '/vendor/autoload.php';
 
-$apiKey = '<<Api Key Obtained from SMS.to>>';
+use SmstoOtp\Cache;
+use SmstoOtp\Request;
 
-$request = new \Smsto\Request($apiKey);
-$response = $request->sendOtp('Recipient number in E+164 format');
+$apiKey = '<<Api Key Obtained from SMS.to>>';
+$senderId = 'smsto';
+$recipient = 'Recipient number in E+164 format';
+$cache = Cache::getInstance('localhost', 6379);
+$request = new Request($apiKey);
+$response = $request->sendOtp($recipient, $senderId, $cache);
 // 4569
 var_dump($response);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smsto;
+namespace SmstoOtp;
 
 
 class Request
@@ -14,12 +14,12 @@ class Request
         $this->apiKey = $apiKey;
     }
 
-    public function sendOtp($recipient, $senderId = 'smsto')
+    public function sendOtp($recipient, $senderId = 'smsto', $cache = null)
     {
         $ch = curl_init();
         $payload = http_build_query([
             'to' => $recipient,
-            'message' => 'Your code is ' . Otp::generateNumericOTP($recipient),
+            'message' => 'Your code is ' . Otp::generateNumericOTP($recipient, $cache),
             'api_key' => $this->apiKey,
             'sender_id' => $senderId,
         ]);
