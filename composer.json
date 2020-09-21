@@ -1,9 +1,9 @@
 {
-    "name": "itsursujit/smsto-otp",
+    "name": "intergo/smsto-otp",
     "authors": [
         {
-            "name": "Sujit",
-            "email": "itsursujit@gmail.com"
+            "name": "Intergo Telecom",
+            "email": "support@sms.to"
         }
     ],
     "autoload": {

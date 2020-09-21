@@ -2,10 +2,10 @@
 - Redis extension for php
 
 ## Install the package
-> composer require itsursujit/smsto-otp:dev-master
+> composer require intergo/smsto-otp:dev-master
 
 Or Add to composer.json as
-> "itsursujit/smsto-otp": "dev-master"
+> "intergo/smsto-otp": "dev-master"
 
 and run command
 > composer update
