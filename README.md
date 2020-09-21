@@ -5,7 +5,7 @@
 > composer require itsursujit/smsto-otp:dev-master
 
 Or Add to composer.json as
-> "itsursujit/smsto-otp: "dev-master"
+> "itsursujit/smsto-otp": "dev-master"
 
 and run command
 > composer update
