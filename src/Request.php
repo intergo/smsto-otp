@@ -9,33 +9,37 @@ class Request
 
     private $url = 'https://api.sms.to/sms/send';
 
-    public function __construct($apiKey)
+    private $cache;
+
+    public function __construct($apiKey, $cache = null)
     {
         $this->apiKey = $apiKey;
+        $this->cache = $cache;
     }
 
-    public function sendOtp($recipient, $senderId = 'smsto', $cache = null)
+    /**
+     * @throws \Exception
+     */
+    public function sendOtp($recipient, $senderId = 'smsto', $message = 'Your code is @code', $noOfDigits = 4)
     {
-        $ch = curl_init();
-        $payload = http_build_query([
+        $ch = curl_init($this->url);
+        $code = Otp::generateNumericOTP($recipient, $this->cache, $noOfDigits);
+        $message = str_replace('@code', $code, $message);
+        $payload = [
             'to' => $recipient,
-            'message' => 'Your code is ' . Otp::generateNumericOTP($recipient, $cache),
-            'api_key' => $this->apiKey,
+            'message' => $message,
             'sender_id' => $senderId,
-        ]);
-        $url = $this->url . '?' . $payload;
-        // set url
-        curl_setopt($ch, CURLOPT_URL, $url);
+        ];
+        $data = json_encode($payload);
 
-        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        // $output contains the output string
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: Bearer ' . $this->apiKey]);
         $output = curl_exec($ch);
-
-        // close curl resource to free up system resources
         curl_close($ch);
-
-        return json_decode($output, true);
+        $json = json_decode($output, true);
+        $json['code'] = $code;
+        return $json;
     }
 }

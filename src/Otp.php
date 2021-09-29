@@ -5,20 +5,19 @@ namespace SmstoOtp;
 
 class Otp
 {
-    public static function generateNumericOTP($recipient, $cache = null)
+    public static function generateNumericOTP($recipient, $cache = null, $noOfDigits = 4)
     {
-        $n = 4;
-        $generator = "1357902468";
+        $generator = time();
         $result = "";
         $cache = $cache ?? Cache::getInstance();
-        for ($i = 1; $i <= $n; $i++) {
-            $result .= substr($generator, (rand()%(strlen($generator))), 1);
-        }
         $recipient = str_replace('+', '', $recipient);
         $value = $cache->get($recipient);
         if ($value)
         {
             throw new \Exception('OTP Code already sent');
+        }
+        for ($i = 1; $i <= $noOfDigits; $i++) {
+            $result .= substr($generator, (rand()%(strlen($generator))), 1);
         }
         Cache::getInstance()->set($recipient, $result, ['EX' => 4 * 60]);
         return $result;

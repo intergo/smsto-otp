@@ -5,10 +5,8 @@ use SmstoOtp\Otp;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$apiKey = '<<Api Key Obtained from SMS.to>>';
-
 $recipient = 'Recipient number in E+164 format';
-$code = 3487;
+$code = 1660;
 
 $cache = Cache::getInstance('localhost', 6379);
 $response = Otp::verifyOtp($recipient, $code, $cache);

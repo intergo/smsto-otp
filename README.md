@@ -1,6 +1,8 @@
 ## Minimum Requirement
 - Redis extension for php
 
+Providing `$cache` is optional. By default will use redis with host: `localhost` and port: `6379`
+
 ## Install the package
 > composer require intergo/smsto-otp:dev-master
 
@@ -23,14 +25,13 @@ use SmstoOtp\Request;
 $apiKey = '<<Api Key Obtained from SMS.to>>';
 $senderId = 'smsto';
 $recipient = 'Recipient number in E+164 format';
+$message = 'Your OTP code is @code';
 $cache = Cache::getInstance('localhost', 6379);
-$request = new Request($apiKey);
-$response = $request->sendOtp($recipient, $senderId, $cache);
+$request = new Request($apiKey, $cache);
+$response = $request->sendOtp($recipient, $senderId, $message);
 // 4569
 var_dump($response);
 ```
-
-Providing `$cache` is optional
 
 ```php
 <?php
@@ -40,10 +41,8 @@ use SmstoOtp\Otp;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$apiKey = '<<Api Key Obtained from SMS.to>>';
-
 $recipient = 'Recipient number in E+164 format';
-$code = 3487;
+$code = 1660;
 
 $cache = Cache::getInstance('localhost', 6379);
 $response = Otp::verifyOtp($recipient, $code, $cache);
